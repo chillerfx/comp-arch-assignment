@@ -1,0 +1,49 @@
+// Name: Artūras Sotničenko
+// Student ID:  s1513159
+// Description:
+// Mic1 programming assignment 1
+.constant
+thirty     0x30
+.end-constant
+.main
+
+read:   IN              // put the character input to stack
+        DUP             // duplicate top of stack for comparing (null)
+        BIPUSH 0x0      // push null for comparison
+        IF_ICMPEQ loop  // if no characters are available for input, loop
+        DUP             // duplicate top of stack for comparing (ascii =)
+        BIPUSH 0x3D     // push ascii = for comparison
+        IF_ICMPEQ calc // if true do calculations and print result
+
+        DUP             // debugging
+        OUT             // debugging
+
+        GOTO read       // loop back to beginning of program
+
+loop:   POP             // No key has been pushed, so clear the stack,
+        GOTO read       // and start over
+
+add:    POP             //remove + sign
+        IADD
+        //LDC_W thirty
+        //ISUB
+        GOTO print
+
+subs:   //POP             //remove - sign
+        SWAP
+        ISUB
+        //LDC_W thirty
+        IADD
+        GOTO print
+
+calc:   POP             // remove the ascii = from stack
+        DUP
+        BIPUSH 0x2B     // push ascii + for comparison
+        IF_ICMPEQ add   // if true add two last numbers
+        BIPUSH 0x2D     // push ascii - for comparison
+        IF_ICMPEQ subs   // if true subtract two last numbers
+        HALT
+
+print:  OUT
+        GOTO read
+.end-main
